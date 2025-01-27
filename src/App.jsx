@@ -3,7 +3,8 @@ import FilterButtons from '@components/ui/FilterButtons'
 import TaskForm from '@components/task/TaskForm'
 import TaskList from '@components/task/TaskList'
 import SearchBar from '@components/ui/SearchBar'
-import { TaskProvider } from '@/context/TaskContext'
+import { Provider } from 'react-redux'
+import { store } from './store/store'
 
 function TaskManager() {
   return (
@@ -22,8 +23,8 @@ function TaskManager() {
 
 export default function App() {
   return (
-    <TaskProvider>
+    <Provider store={store}>
       <TaskManager />
-    </TaskProvider>
+    </Provider>
   )
 }

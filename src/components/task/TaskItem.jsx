@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { useTasks } from '@/context/TaskContext'
+import { useDispatch } from 'react-redux'
+import { toggleTask, deleteTask, updateTask } from '@/store/tasksSlice'
 import { getPriorityColor } from '@/utils/priorityUtils'
 import PriorityBadge from '@/components/shared/PriorityBadge'
 import TaskHistory from '@/components/task/TaskHistory'
 
 export default function TaskItem({ task }) {
-  const { toggleTask, deleteTask, updateTask } = useTasks()
+  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(false)
   const [editText, setEditText] = useState(task.text)
   const [editPriority, setEditPriority] = useState(task.priority)
@@ -17,7 +18,7 @@ export default function TaskItem({ task }) {
     const hasChanges = task.text !== editText.trim() || task.priority !== editPriority
     
     if (hasChanges) {
-      updateTask(task.id, editText, editPriority)
+      dispatch(updateTask({ id: task.id, newText: editText, newPriority: editPriority }))
     }
     
     setIsEditing(false)
@@ -34,7 +35,7 @@ export default function TaskItem({ task }) {
           <input
             type="checkbox"
             checked={task.completed}
-            onChange={() => toggleTask(task.id)}
+            onChange={() => dispatch(toggleTask(task.id))}
             className="w-5 h-5 rounded border-gray-600 bg-gray-700 text-blue-500 
                      focus:ring-blue-500 focus:ring-offset-gray-800"
           />
@@ -97,7 +98,7 @@ export default function TaskItem({ task }) {
             </>
           )}
           <button 
-            onClick={() => deleteTask(task.id)}
+            onClick={() => dispatch(deleteTask(task.id))}
             className="px-3 py-1 text-sm font-medium text-red-400 hover:text-red-300"
           >
             Delete

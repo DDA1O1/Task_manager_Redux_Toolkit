@@ -2,10 +2,10 @@
  * TaskHistory Component - Displays historical changes for a specific task
  * @param {string} taskId - ID of the current task to show history for
  */
-import { useTasks } from '@/context/TaskContext'
+import { useSelector } from 'react-redux'
 
 export default function TaskHistory({ taskId }) {
-  const { taskHistory } = useTasks()
+  const taskHistory = useSelector(state => state.tasks.taskHistory)
   
   // Filter records for this task
   const history = taskHistory

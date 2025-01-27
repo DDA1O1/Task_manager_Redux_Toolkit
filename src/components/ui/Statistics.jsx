@@ -1,7 +1,7 @@
-import { useTasks } from '@/context/TaskContext'
+import { useSelector } from 'react-redux'
 
 export default function Statistics() {
-  const { tasks } = useTasks()
+  const tasks = useSelector(state => state.tasks.tasks)
   
   const completionRate = tasks.length 
     ? Math.round((tasks.filter(t => t.completed).length / tasks.length) * 100)

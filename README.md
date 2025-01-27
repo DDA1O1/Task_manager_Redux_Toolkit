@@ -1,100 +1,162 @@
+# Task Manager - Redux Toolkit Implementation
 
+A task management application converted from React Context to Redux Toolkit for better state management.
 
-App -> TaskForm -> TaskItem -> TaskHistory
-        ↓
-     TaskList
-        ↓
-    Statistics
+## Project Structure
 
-## State Management with Context API
-
-### Why Context API?
-
-Before implementing Context API, our app faced several challenges:
-1. **Prop Drilling**: State was passed through multiple component layers
-2. **Complex State Management**: Tasks and history state were managed separately
-3. **Scattered Business Logic**: State operations were spread across components
-
-### Implementation
-
-#### 1. Task Context Structure
-```jsx
-TaskContext/
-├── TaskProvider     # Manages global state
-├── useTasks        # Custom hook for consuming context
-└── State           # Manages:
-                    # - tasks
-                    # - taskHistory
-                    # - task operations
+src/
+├── components/
+│ ├── shared/
+│ │ └── PriorityBadge.jsx
+│ ├── task/
+│ │ ├── TaskForm.jsx
+│ │ ├── TaskHistory.jsx
+│ │ ├── TaskItem.jsx
+│ │ └── TaskList.jsx
+│ └── ui/
+│ ├── FilterButtons.jsx
+│ ├── SearchBar.jsx
+│ └── Statistics.jsx
+├── store/
+│ ├── store.js
+│ └── tasksSlice.js
+├── utils/
+│ └── priorityUtils.js
+└── App.jsx
 ```
 
-#### 2. Data Flow
-```
-TaskProvider
-    │
-    ├── Tasks State
-    │   └── [tasks, setTasks]
-    │
-    ├── History State
-    │   └── [taskHistory, setTaskHistory]
-    │
-    └── Operations
-        ├── addTask()
-        ├── updateTask()
-        ├── deleteTask()
-        └── toggleTask()
-```
+## Key Changes: Context API to Redux Toolkit
 
-#### 3. Before vs After Comparison
+### 1. Store Setup
+- Created Redux store using `configureStore`
+- Implemented tasks slice with `createSlice`
+- Added localStorage persistence
 
-**Before:**
-```jsx
-App
-├── tasks, taskHistory state
-├── TaskForm (props: tasks, setTasks, taskHistory, setTaskHistory)
-├── TaskList (props: tasks, setTasks, taskHistory, setTaskHistory)
-│   └── TaskItem (props: tasks, setTasks, taskHistory, setTaskHistory)
-└── Statistics (props: tasks)
-```
-
-**After:**
-```jsx
-TaskProvider
-└── App
-    ├── TaskForm (no props needed)
-    ├── TaskList (no props needed)
-    │   └── TaskItem (no props needed)
-    └── Statistics (no props needed)
-```
-
-### Usage Example
-
-```jsx
-// Using the context in components
-function TaskForm() {
-  const { addTask } = useTasks();
-  // Direct access to context without props
+```javascript
+// store/store.js
+import { configureStore } from '@reduxjs/toolkit'
+import tasksReducer from './tasksSlice'
+export const store = configureStore({
+reducer: {
+tasks: tasksReducer
 }
-
-function Statistics() {
-  const { tasks } = useTasks();
-  // Direct access to tasks without props
-}
+})
 ```
 
-### Benefits
+### 2. State Management
+- Replaced Context API with Redux slice
+- State structure:
+  - tasks: Task list
+  - taskHistory: Changes history
+  - filter: Active filter
+  - searchTerm: Search query
 
-1. **Simplified Component Tree**
-   - Eliminated prop drilling
-   - Cleaner component interfaces
-   - Easier to add new components
+### 3. Key Features
 
-2. **Centralized State Management**
-   - Single source of truth
-   - Predictable state updates
-   - Easier debugging
+#### Task Operations
+- Add task
+- Update task
+- Delete task
+- Toggle completion
+- Track task history
 
-3. **Improved Maintainability**
-   - Business logic centralized in context
-   - Reduced code duplication
-   - Better separation of concerns
+#### Filtering & Search
+- Filter by status (all/active/completed)
+- Search tasks by text
+- Memoized filtered results using `createSelector`
+
+### 4. Component Changes
+
+#### Before (Context):
+```javascript
+const { tasks, addTask } = useTasks()
+```
+
+#### After (Redux):
+```javascript
+const tasks = useSelector(state => state.tasks.tasks)
+const dispatch = useDispatch()
+dispatch(addTask(newTask))
+```
+
+### 5. Performance Optimizations
+- Memoized selectors using `createSelector`
+- Local state for UI components
+- Efficient updates with Redux Toolkit's ImmerJS
+
+## Core Features
+
+1. **Task Management**
+   - Create, edit, delete tasks
+   - Set priority levels
+   - Track completion status
+
+2. **Filtering System**
+   - Filter by status
+   - Search functionality
+   - Priority-based organization
+
+3. **History Tracking**
+   - Track all task changes
+   - View modification history
+   - Timestamp for all actions
+
+4. **Statistics**
+   - Total tasks count
+   - Completion rate
+   - Real-time updates
+
+## Technical Implementation
+
+### State Slice Example
+```javascript
+const tasksSlice = createSlice({
+  name: 'tasks',
+  initialState,
+  reducers: {
+    addTask: (state, action) => {
+      // Add task logic
+    },
+    updateTask: (state, action) => {
+      // Update task logic
+    }
+    // ... other reducers
+  }
+})
+```
+
+### Memoized Selectors
+```javascript
+export const selectFilteredTasks = createSelector(
+  [selectTasks, selectFilter, selectSearchTerm],
+  (tasks, filter, searchTerm) => {
+    // Filtering logic
+  }
+)
+```
+
+## Local Storage Integration
+- Automatic state persistence
+- Load saved tasks on startup
+- Save changes automatically
+
+## UI Components
+- Responsive design
+- Dark theme
+- Interactive elements
+- Priority-based styling
+
+## Best Practices Used
+1. Single source of truth (Redux store)
+2. Immutable state updates
+3. Memoized selectors
+4. Component-level state when appropriate
+5. Clear action creators
+6. Consistent file structure
+
+## Migration Benefits
+1. Centralized state management
+2. Better performance with memoization
+3. Easier debugging
+4. More predictable state updates
+5. Better code organization

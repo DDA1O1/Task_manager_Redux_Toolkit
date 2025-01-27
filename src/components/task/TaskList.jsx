@@ -1,8 +1,9 @@
-import { useTasks } from '@/context/TaskContext'
+import { useSelector } from 'react-redux'
+import { selectFilteredTasks } from '@/store/tasksSlice'
 import TaskItem from '@/components/task/TaskItem'
 
 export default function TaskList() {
-  const { filteredTasks } = useTasks()
+  const filteredTasks = useSelector(selectFilteredTasks)
   
   return (
     <ul className="space-y-2">

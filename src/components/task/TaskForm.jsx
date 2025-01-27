@@ -1,16 +1,17 @@
 import { useState } from 'react'
-import { useTasks } from '@/context/TaskContext'
+import { useDispatch } from 'react-redux'
+import { addTask } from '@/store/tasksSlice'
 
 export default function TaskForm() {
   const [newTask, setNewTask] = useState('')
   const [newPriority, setNewPriority] = useState('low')
-  const { addTask } = useTasks()
+  const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!newTask.trim()) return
     
-    addTask(newTask, newPriority)
+    dispatch(addTask({ text: newTask, priority: newPriority }))
     setNewTask('')
   }
 

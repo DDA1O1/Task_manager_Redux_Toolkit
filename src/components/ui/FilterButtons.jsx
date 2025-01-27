@@ -1,7 +1,9 @@
-import { useTasks } from '@/context/TaskContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { setFilter } from '@/store/tasksSlice'
 
 export default function FilterButtons() {
-  const { filter, setFilter } = useTasks()
+  const dispatch = useDispatch()
+  const filter = useSelector(state => state.tasks.filter)
   const filters = ['all', 'active', 'completed']
 
   return (
@@ -9,7 +11,7 @@ export default function FilterButtons() {
       {filters.map((filterType) => (
         <button 
           key={filterType}
-          onClick={() => setFilter(filterType)}
+          onClick={() => dispatch(setFilter(filterType))}
           className={`px-4 py-2 rounded-lg capitalize transition-colors ${
             filter === filterType 
               ? 'bg-blue-600 text-white' 
