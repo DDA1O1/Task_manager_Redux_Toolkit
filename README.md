@@ -23,7 +23,7 @@ src/
 ├── utils/
 │ └── priorityUtils.js
 └── App.jsx
-```
+
 
 ## Key Changes: Context API to Redux Toolkit
 
