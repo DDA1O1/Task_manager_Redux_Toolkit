@@ -4,26 +4,27 @@ A task management application converted from React Context to Redux Toolkit for 
 
 ## Project Structure
 
+```
 src/
 ├── components/
-│ ├── shared/
-│ │ └── PriorityBadge.jsx
-│ ├── task/
-│ │ ├── TaskForm.jsx
-│ │ ├── TaskHistory.jsx
-│ │ ├── TaskItem.jsx
-│ │ └── TaskList.jsx
-│ └── ui/
-│ ├── FilterButtons.jsx
-│ ├── SearchBar.jsx
-│ └── Statistics.jsx
+│   ├── shared/
+│   │   └── PriorityBadge.jsx
+│   ├── task/
+│   │   ├── TaskForm.jsx
+│   │   ├── TaskHistory.jsx
+│   │   ├── TaskItem.jsx
+│   │   └── TaskList.jsx
+│   └── ui/
+│       ├── FilterButtons.jsx
+│       ├── SearchBar.jsx
+│       └── Statistics.jsx
 ├── store/
-│ ├── store.js
-│ └── tasksSlice.js
+│   ├── store.js
+│   └── tasksSlice.js
 ├── utils/
-│ └── priorityUtils.js
+│   └── priorityUtils.js
 └── App.jsx
-
+```
 
 ## Key Changes: Context API to Redux Toolkit
 
