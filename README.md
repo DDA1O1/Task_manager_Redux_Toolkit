@@ -83,7 +83,9 @@ dispatch(addTask(newTask))
 ### 5. Performance Optimizations
 - Memoized selectors using `createSelector`
 - Local state for UI components
-- Efficient updates with Redux Toolkit's ImmerJS
+- Simplified state updates with ImmerJS (built into Redux Toolkit)
+  - No spread operators needed
+  - Direct state mutations are safely handled
 
 ## Core Features
 
@@ -106,6 +108,22 @@ dispatch(addTask(newTask))
    - Total tasks count
    - Completion rate
    - Real-time updates
+
+### 6. Application Context
+- Redux Provider wraps the main application
+- Ensures store accessibility throughout component tree
+- Clean separation between store setup and UI components
+
+```javascript
+// App.jsx structure
+export default function App() {
+  return (
+    <Provider store={store}>
+      <TaskManager />
+    </Provider>
+  )
+}
+```
 
 ## Technical Implementation
 
